@@ -396,26 +396,37 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
         if (self.answerCall == nil && self.outgoingCall == nil) {
             sendEvent(SwiftFlutterCallkitIncomingPlugin.ACTION_CALL_DECLINE, self.data?.toJSON())
 
-            let url = URL(string: "https://us-central1-weshopmessenger.cloudfunctions.net/declineCall")!
+           let url = URL(string: "https://us-central1-weshopmessenger.cloudfunctions.net/declineCall")!
             var request = URLRequest(url: url)
             request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
             request.setValue("application/json", forHTTPHeaderField: "Accept")
             request.httpMethod = "POST"
-            let parameters: [String: Any] = [
-            "callUUID": action.callUUID,
-            "uuid": action.uuid
-            ]
-            let bodyData = try? JSONSerialization.data(
-            withJSONObject: parameters,
-            options: []
-            )
-            request.httpBody = bodyData
+            struct UploadData: Codable {
+            let callUUID: String
+            let uuid: String
+
+
+
+            }
+
+
+
+            // Add data to the model
+            let uploadDataModel = UploadData(callUUID: action.callUUID.uuidString, uuid: action.callUUID.uuidString)
+
+
+
+            // Convert model to JSON data
+            guard let jsonData = try? JSONEncoder().encode(uploadDataModel) else {
+            print("Error: Trying to convert model to JSON data")
+            return
+            }
+            request.httpBody = jsonData
 
 
 
             let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard
-            let data = data,
+            guard let data = data,
             let response = response as? HTTPURLResponse,
             error == nil
             else { // check for fundamental networking error
