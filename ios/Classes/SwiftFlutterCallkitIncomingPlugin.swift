@@ -405,7 +405,11 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
             "callUUID": action.callUUID,
             "uuid": action.uuid
             ]
-            request.httpBody = parameters.percentEncoded()
+            let bodyData = try? JSONSerialization.data(
+            withJSONObject: parameters,
+            options: []
+            )
+            request.httpBody = bodyData
 
 
 
@@ -434,8 +438,8 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
 
 
             do {
-            let responseObject = try JSONDecoder().decode(ResponseObject<Foo>.self, from: data)
-            print(responseObject)
+            // let responseObject = try JSONDecoder().decode(ResponseObject<Foo>.self, from: data)
+            // print(responseObject)
             } catch {
             print(error) // parsing error
 
