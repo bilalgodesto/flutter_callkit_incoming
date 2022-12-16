@@ -395,6 +395,63 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
         self.callManager?.removeCall(call)
         if (self.answerCall == nil && self.outgoingCall == nil) {
             sendEvent(SwiftFlutterCallkitIncomingPlugin.ACTION_CALL_DECLINE, self.data?.toJSON())
+
+            let url = URL(string: "https://us-central1-weshopmessenger.cloudfunctions.net/declineCall")!
+            var request = URLRequest(url: url)
+            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.httpMethod = "POST"
+            let parameters: [String: Any] = [
+            "callUUID": action.callUUID,
+            "uuid": action.uuid
+            ]
+            request.httpBody = parameters.percentEncoded()
+
+
+
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard
+            let data = data,
+            let response = response as? HTTPURLResponse,
+            error == nil
+            else { // check for fundamental networking error
+            print("error", error ?? URLError(.badServerResponse))
+            return
+            }
+
+
+
+            guard (200 ... 299) ~= response.statusCode else { // check for http errors
+            print("statusCode should be 2xx, but is \(response.statusCode)")
+            print("response = \(response)")
+            return
+            }
+
+
+
+            // do whatever you want with the data, e.g.:
+
+
+
+            do {
+            let responseObject = try JSONDecoder().decode(ResponseObject<Foo>.self, from: data)
+            print(responseObject)
+            } catch {
+            print(error) // parsing error
+
+
+
+            if let responseString = String(data: data, encoding: .utf8) {
+            print("responseString = \(responseString)")
+            } else {
+            print("unable to parse response as string")
+            }
+            }
+            }
+
+
+
+            task.resume()
             DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                 action.fulfill()
             }
