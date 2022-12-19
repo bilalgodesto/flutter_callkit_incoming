@@ -396,77 +396,54 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
         if (self.answerCall == nil && self.outgoingCall == nil) {
             sendEvent(SwiftFlutterCallkitIncomingPlugin.ACTION_CALL_DECLINE, self.data?.toJSON())
 
-           let url = URL(string: "https://us-central1-weshopmessenger.cloudfunctions.net/declineCall")!
+            let url = URL(string: "https://us-central1-weshopmessenger.cloudfunctions.net/declineCall")!
             var request = URLRequest(url: url)
-            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            //HTTP Headers
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.addValue("application/json", forHTTPHeaderField: "Accept")
             request.httpMethod = "POST"
             struct UploadData: Codable {
             let callUUID: String
             let uuid: String
-
-
-
             }
-
-
-
             // Add data to the model
-            let uploadDataModel = UploadData(callUUID: action.callUUID.uuidString, uuid: action.callUUID.uuidString)
-
-
+            let uploadDataModel = UploadData(callUUID: action.callUUID.uuidString, uuid: action.uuid.uuidString)
 
             // Convert model to JSON data
             guard let jsonData = try? JSONEncoder().encode(uploadDataModel) else {
-            print("Error: Trying to convert model to JSON data")
-            return
+                print("Error: Trying to convert model to JSON data")
+                return
             }
             request.httpBody = jsonData
-
-
-
-            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data,
             let response = response as? HTTPURLResponse,
             error == nil
             else { // check for fundamental networking error
-            print("error", error ?? URLError(.badServerResponse))
-            return
+                print("error", error ?? URLError(.badServerResponse))
+                return
             }
-
-
-
             guard (200 ... 299) ~= response.statusCode else { // check for http errors
-            print("statusCode should be 2xx, but is \(response.statusCode)")
-            print("response = \(response)")
-            return
+                print("statusCode should be 2xx, but is \(response.statusCode)")
+                print("response = \(response)")
+                return
             }
-
-
-
             // do whatever you want with the data, e.g.:
 
-
-
             do {
-            // let responseObject = try JSONDecoder().decode(ResponseObject<Foo>.self, from: data)
-            // print(responseObject)
+            //let responseObject = try JSONDecoder().decode(ResponseObject<Foo>.self, from: data)
+            //print(responseObject)
             } catch {
             print(error) // parsing error
-
-
-
             if let responseString = String(data: data, encoding: .utf8) {
-            print("responseString = \(responseString)")
+                print("responseString = \(responseString)")
+
             } else {
-            print("unable to parse response as string")
+                print("unable to parse response as string")
             }
             }
-            }
-
-
-
-            task.resume()
+            }.resume()
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                 action.fulfill()
             }
