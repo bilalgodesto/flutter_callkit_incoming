@@ -424,7 +424,7 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
                 return
             }
             guard (200 ... 299) ~= response.statusCode else { // check for http errors
-                print("statusCode should be 2xx, but is \(response.statusCode)")
+                print("statusCode should be 200, but is \(response.statusCode)")
                 print("response = \(response)")
                 return
             }
