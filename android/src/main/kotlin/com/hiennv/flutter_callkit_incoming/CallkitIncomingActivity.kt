@@ -1,5 +1,5 @@
 package com.hiennv.flutter_callkit_incoming
-
+import android.widget.Toast
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.KeyguardManager
@@ -303,6 +303,7 @@ class CallkitIncomingActivity : Activity() {
         val intent =
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
         sendBroadcast(intent)
+        Toast.makeText(this, "Hi there! This is a Toast.", Toast.LENGTH_LONG).show()
         finish()
     }
     
