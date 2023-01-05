@@ -303,7 +303,6 @@ class CallkitIncomingActivity : Activity() {
         val intent =
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
         sendBroadcast(intent)
-        Toast.makeText(this, "Hi there! This is a Toast.", Toast.LENGTH_LONG).show()
         finish()
     }
     
