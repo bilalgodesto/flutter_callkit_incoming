@@ -306,11 +306,10 @@ class CallkitIncomingActivity : Activity() {
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
         sendBroadcast(intent)
         // Delay of 2 sec
-        Timer().schedule(2000){
-            //calling a function
-            Toast.makeText(this, "Call Ended", Toast.LENGTH_LONG).show()
-            finish()
-            }     
+        Timer().schedule(2000)
+        {
+              finish()
+        }     
     }
     
     private fun getPicassoInstance(context: Context, headers: HashMap<String, Any?>): Picasso {
