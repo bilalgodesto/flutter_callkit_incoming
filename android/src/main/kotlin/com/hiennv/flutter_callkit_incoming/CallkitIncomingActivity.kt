@@ -305,10 +305,6 @@ class CallkitIncomingActivity : Activity() {
         val intent =
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
         sendBroadcast(intent)
-        Handler().postDelayed({
-            Toast.makeText(this, "Call Ended", Toast.LENGTH_LONG).show()
-            finishAndRemoveTask()
-        }, 2000)
     }
     
     private fun getPicassoInstance(context: Context, headers: HashMap<String, Any?>): Picasso {
