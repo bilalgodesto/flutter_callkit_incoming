@@ -303,7 +303,8 @@ class CallkitIncomingActivity : Activity() {
         val intent =
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
         sendBroadcast(intent)
-        finish()
+        Toast.makeText(this, "Hi there! This is a Toast.", Toast.LENGTH_LONG).show()
+        finishAndRemoveTask()
     }
     
     private fun getPicassoInstance(context: Context, headers: HashMap<String, Any?>): Picasso {
