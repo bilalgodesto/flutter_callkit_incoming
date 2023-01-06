@@ -1,5 +1,7 @@
 package com.hiennv.flutter_callkit_incoming
 import android.widget.Toast
+import java.util.Timer
+import kotlin.concurrent.schedule
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.KeyguardManager
@@ -303,8 +305,12 @@ class CallkitIncomingActivity : Activity() {
         val intent =
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
         sendBroadcast(intent)
-        Toast.makeText(this, "Call Ended", Toast.LENGTH_LONG).show()
-        finish()
+        // Delay of 2 sec
+        Timer().schedule(2000){
+            //calling a function
+            Toast.makeText(this, "Call Ended", Toast.LENGTH_LONG).show()
+            finish()
+            }     
     }
     
     private fun getPicassoInstance(context: Context, headers: HashMap<String, Any?>): Picasso {
