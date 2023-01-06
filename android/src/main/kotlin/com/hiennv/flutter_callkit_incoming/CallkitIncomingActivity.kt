@@ -308,7 +308,8 @@ class CallkitIncomingActivity : Activity() {
         // Delay of 2 sec
         Timer().schedule(2000)
         {
-              finish()
+            Toast.makeText(this, "Call Ended", Toast.LENGTH_LONG).show()
+            finish()
         }     
     }
     
