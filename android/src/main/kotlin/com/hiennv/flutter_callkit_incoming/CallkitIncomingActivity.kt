@@ -308,7 +308,7 @@ class CallkitIncomingActivity : Activity() {
         Handler().postDelayed({
             Toast.makeText(this, "Call Ended", Toast.LENGTH_LONG).show()
             finish()
-        }, 2000)
+        }, 2500)
             
     }
     
