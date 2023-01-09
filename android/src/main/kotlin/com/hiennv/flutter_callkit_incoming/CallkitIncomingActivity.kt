@@ -306,7 +306,7 @@ class CallkitIncomingActivity : Activity() {
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
         sendBroadcast(intent)
         Handler().postDelayed({
-            Toast.makeText(this, "Call Ended", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Call ended", Toast.LENGTH_LONG).show()
             finish()
         }, 2500)
             
