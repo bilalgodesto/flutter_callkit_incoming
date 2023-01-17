@@ -70,12 +70,11 @@ class CallkitIncomingActivity : Activity() {
 
     inner class EndedCallkitIncomingBroadcastReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            finish()
             if (!isFinishing) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    finishAndRemoveTask()
+                    //finishAndRemoveTask()
                 } else {
-                    finish()
+                    //finish()
                 }
             }
         }
