@@ -71,6 +71,7 @@ class CallkitIncomingActivity : Activity() {
     inner class EndedCallkitIncomingBroadcastReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (!isFinishing) {
+                Toast.makeText(this, "BroadcastEnd", Toast.LENGTH_LONG).show()
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     finishAndRemoveTask()
                 } else {
@@ -305,10 +306,18 @@ class CallkitIncomingActivity : Activity() {
         val intent =
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
         sendBroadcast(intent)
-        Handler().postDelayed({
-            Toast.makeText(this, "Call ended", Toast.LENGTH_LONG).show()
-            finish()
-        }, 2500)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {   
+            Handler().postDelayed({
+                Toast.makeText(this, "Call ended", Toast.LENGTH_LONG).show()
+                finishAndRemoveTask()
+            }, 2500)
+        } else {
+            Handler().postDelayed({
+                Toast.makeText(this, "Call ended", Toast.LENGTH_LONG).show()
+                finish()
+            }, 2500)
+        }
+        
             
     }
     
@@ -328,6 +337,7 @@ class CallkitIncomingActivity : Activity() {
     }
 
     override fun onDestroy() {
+        Toast.makeText(this, "On Destroy", Toast.LENGTH_LONG).show()
         unregisterReceiver(endedCallkitIncomingBroadcastReceiver)
         super.onDestroy()
     }
