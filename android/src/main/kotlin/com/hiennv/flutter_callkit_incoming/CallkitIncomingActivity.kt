@@ -64,7 +64,9 @@ class CallkitIncomingActivity : Activity() {
         }
 
         fun getIntentEnded(context: Context) =
-                Intent("${context.packageName}.${ACTION_ENDED_CALL_INCOMING}")
+                Intent("${context.packageName}.${ACTION_ENDED_CALL_INCOMING}").apply{
+                    Toast.makeText(context, "22 here", Toast.LENGTH_LONG).show()
+                }
 
     }
 
