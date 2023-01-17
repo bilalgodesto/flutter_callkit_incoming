@@ -72,9 +72,9 @@ class CallkitIncomingActivity : Activity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (!isFinishing) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    //finishAndRemoveTask()
+                    finishAndRemoveTask()
                 } else {
-                    //finish()
+                    finish()
                 }
             }
         }
@@ -237,6 +237,7 @@ class CallkitIncomingActivity : Activity() {
     }
 
     private fun initView() {
+        Toast.makeText(this, "Call here", Toast.LENGTH_LONG).show()
         ivBackground = findViewById(R.id.ivBackground)
         llBackgroundAnimation = findViewById(R.id.llBackgroundAnimation)
         llBackgroundAnimation.layoutParams.height =
