@@ -65,8 +65,7 @@ class CallkitIncomingActivity : Activity() {
 
         fun getIntentEnded(context: Context) =
                 Intent("${context.packageName}.${ACTION_ENDED_CALL_INCOMING}").apply{
-                    flags =
-                    Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                    IntentFilter(ACTION_ENDED_CALL_INCOMING)
                 }
 
     }
