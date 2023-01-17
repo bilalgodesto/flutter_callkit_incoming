@@ -71,9 +71,12 @@ class CallkitIncomingActivity : Activity() {
     inner class EndedCallkitIncomingBroadcastReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (!isFinishing) {
+                Toast.makeText(applicationContext, "2 here", Toast.LENGTH_LONG).show()
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Toast.makeText(applicationContext, "3 here", Toast.LENGTH_LONG).show()
                     finishAndRemoveTask()
                 } else {
+                    Toast.makeText(applicationContext, "4 here", Toast.LENGTH_LONG).show()
                     finish()
                 }
             }
@@ -237,7 +240,6 @@ class CallkitIncomingActivity : Activity() {
     }
 
     private fun initView() {
-        Toast.makeText(this, "Call here", Toast.LENGTH_LONG).show()
         ivBackground = findViewById(R.id.ivBackground)
         llBackgroundAnimation = findViewById(R.id.llBackgroundAnimation)
         llBackgroundAnimation.layoutParams.height =
@@ -338,6 +340,7 @@ class CallkitIncomingActivity : Activity() {
     }
 
     override fun onDestroy() {
+        Toast.makeText(this, "One here", Toast.LENGTH_LONG).show()
         unregisterReceiver(endedCallkitIncomingBroadcastReceiver)
         super.onDestroy()
     }
