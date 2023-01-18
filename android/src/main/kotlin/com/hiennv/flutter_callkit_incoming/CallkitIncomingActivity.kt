@@ -59,6 +59,7 @@ class CallkitIncomingActivity : Activity() {
         fun getIntent(context: Context, data: Bundle) = Intent(ACTION_CALL_INCOMING).apply {
             action = "${context.packageName}.${ACTION_CALL_INCOMING}"
             putExtra(EXTRA_CALLKIT_INCOMING_DATA, data)
+            Toast.makeText(context, "62--"+data.toString(), Toast.LENGTH_LONG).show()
             flags =
                     Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
         }
@@ -66,7 +67,7 @@ class CallkitIncomingActivity : Activity() {
         fun getIntentEnded(context: Context) = Intent(ACTION_ENDED_CALL_INCOMING).apply{
             action = "${context.packageName}.${ACTION_ENDED_CALL_INCOMING}"
             putExtra(EXTRA_CALLKIT_INCOMING_DATA, data)
-            Toast.makeText(context, data.toString(), Toast.LENGTH_LONG).show() 
+            Toast.makeText(context, "69--"+data.toString(), Toast.LENGTH_LONG).show() 
         }
 
     }
@@ -168,6 +169,7 @@ class CallkitIncomingActivity : Activity() {
 
     private fun incomingData(intent: Intent) {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
+        Toast.makeText(applicationContext, "172--"+data.toString(), Toast.LENGTH_LONG).show() 
         if (data == null) finish()
 
         tvNameCaller.text = data?.getString(EXTRA_CALLKIT_NAME_CALLER, "")
@@ -279,6 +281,7 @@ class CallkitIncomingActivity : Activity() {
 
     private fun onAcceptClick() {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
+        Toast.makeText(this, "284--"+data.toString(), Toast.LENGTH_LONG).show() 
         val intent = packageManager.getLaunchIntentForPackage(packageName)?.cloneFilter()
         if (isTaskRoot) {
             intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -305,6 +308,7 @@ class CallkitIncomingActivity : Activity() {
 
     private fun onDeclineClick() {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
+        Toast.makeText(applicationContext, "311--"+data.toString(), Toast.LENGTH_LONG).show() 
         val intent =
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
         sendBroadcast(intent)
