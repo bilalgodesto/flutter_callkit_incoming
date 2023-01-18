@@ -230,16 +230,9 @@ class CallkitIncomingActivity : Activity() {
         ivDeclineCall.setOnClickListener {
             onDeclineClick()
         }
-        onDeclineFromCaller()
-    }
-
-    private fun onDeclineFromCaller() {
-        Handler().postDelayed({
-            val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
-            val intent =
-                    CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
-        }, 2500)
-        
+        val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
+        val intent =
+                CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
     }
 
     private fun animateAcceptCall() {
