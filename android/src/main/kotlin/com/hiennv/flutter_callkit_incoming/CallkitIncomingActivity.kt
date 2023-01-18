@@ -267,15 +267,16 @@ class CallkitIncomingActivity : Activity() {
             onDeclineClick()
         }
 
-        Handler().postDelayed({
-        val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
-        val intent =
-                CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
-        Toast.makeText(this, "Init " + data.toString(), Toast.LENGTH_LONG).show()
-        }, 2200)
+        onDeclineFromSender()
        
     }
-    
+    private fun onDeclineFromSender() {
+        Handler().postDelayed({
+            val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
+            val intent =
+                    CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
+            }, 2500)
+    }
 
     private fun animateAcceptCall() {
         val shakeAnimation =
@@ -287,6 +288,7 @@ class CallkitIncomingActivity : Activity() {
     private fun onAcceptClick() {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         val intent = packageManager.getLaunchIntentForPackage(packageName)?.cloneFilter()
+        sendBroadcast(intent)
         if (isTaskRoot) {
             intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         } else {
@@ -347,16 +349,6 @@ class CallkitIncomingActivity : Activity() {
         super.onDestroy()
     }
     
-    override fun onResume(){
-    super.onResume();
-    Handler().postDelayed({
-        val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
-        val intent =
-                CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
-        Toast.makeText(this, "Init " + data.toString(), Toast.LENGTH_LONG).show()
-        }, 2200)
-
-}
 
     override fun onBackPressed() {}
 
