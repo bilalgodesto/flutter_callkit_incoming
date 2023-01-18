@@ -273,12 +273,12 @@ class CallkitIncomingActivity : Activity() {
         sendBroadcast(intent)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {       
             Handler().postDelayed({
-                Toast.makeText(this, "Call Ended", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Call Endeeed", Toast.LENGTH_LONG).show()
                 finishAndRemoveTask()
             }, 2500)
         } else {
             Handler().postDelayed({
-                Toast.makeText(this, "Call Ended", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Call Endeeed", Toast.LENGTH_LONG).show()
                 finish()
             }, 2500)
         }
