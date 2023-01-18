@@ -47,19 +47,26 @@ import android.os.PowerManager.WakeLock
 import android.text.TextUtils
 import com.hiennv.flutter_callkit_incoming.CallkitIncomingBroadcastReceiver.Companion.EXTRA_CALLKIT_TEXT_ACCEPT
 import com.hiennv.flutter_callkit_incoming.CallkitIncomingBroadcastReceiver.Companion.EXTRA_CALLKIT_TEXT_DECLINE
+
+
 class CallkitIncomingActivity : Activity() {
+
     companion object {
+
         const val ACTION_ENDED_CALL_INCOMING =
                 "com.hiennv.flutter_callkit_incoming.ACTION_ENDED_CALL_INCOMING"
+
         fun getIntent(context: Context, data: Bundle) = Intent(ACTION_CALL_INCOMING).apply {
             action = "${context.packageName}.${ACTION_CALL_INCOMING}"
             putExtra(EXTRA_CALLKIT_INCOMING_DATA, data)
             flags =
                     Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
         }
-        fun getIntentEnded(context: Context) =
-                Intent("${context.packageName}.${ACTION_ENDED_CALL_INCOMING}")
+
+        fun getIntentEnded(context: Context) = Intent(ACTION_ENDED_CALL_INCOMING)
+
     }
+
     inner class EndedCallkitIncomingBroadcastReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (!isFinishing) {
@@ -71,18 +78,24 @@ class CallkitIncomingActivity : Activity() {
             }
         }
     }
+
     private var endedCallkitIncomingBroadcastReceiver = EndedCallkitIncomingBroadcastReceiver()
+
     private lateinit var ivBackground: ImageView
     private lateinit var llBackgroundAnimation: RippleRelativeLayout
+
     private lateinit var tvNameCaller: TextView
     private lateinit var tvNumber: TextView
     private lateinit var ivLogo: ImageView
     private lateinit var ivAvatar: CircleImageView
+
     private lateinit var llAction: LinearLayout
     private lateinit var ivAcceptCall: ImageView
     private lateinit var tvAccept: TextView
+
     private lateinit var ivDeclineCall: ImageView
     private lateinit var tvDecline: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
@@ -104,7 +117,9 @@ class CallkitIncomingActivity : Activity() {
                 IntentFilter(ACTION_ENDED_CALL_INCOMING)
         )
     }
+
     private fun wakeLockRequest(duration: Long) {
+
         val pm = applicationContext.getSystemService(POWER_SERVICE) as PowerManager
         val wakeLock = pm.newWakeLock(
                 PowerManager.SCREEN_BRIGHT_WAKE_LOCK or PowerManager.FULL_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
@@ -112,6 +127,7 @@ class CallkitIncomingActivity : Activity() {
         )
         wakeLock.acquire(duration)
     }
+
     private fun transparentStatusAndNavigation() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             setWindowFlag(
@@ -133,6 +149,7 @@ class CallkitIncomingActivity : Activity() {
             window.navigationBarColor = Color.TRANSPARENT
         }
     }
+
     private fun setWindowFlag(bits: Int, on: Boolean) {
         val win: Window = window
         val winParams: WindowManager.LayoutParams = win.attributes
@@ -143,13 +160,18 @@ class CallkitIncomingActivity : Activity() {
         }
         win.attributes = winParams
     }
+
+
     private fun incomingData(intent: Intent) {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         if (data == null) finish()
+
         tvNameCaller.text = data?.getString(EXTRA_CALLKIT_NAME_CALLER, "")
         tvNumber.text = data?.getString(EXTRA_CALLKIT_HANDLE, "")
+
         val isShowLogo = data?.getBoolean(EXTRA_CALLKIT_IS_SHOW_LOGO, false)
         ivLogo.visibility = if (isShowLogo == true) View.VISIBLE else View.INVISIBLE
+
         val avatarUrl = data?.getString(EXTRA_CALLKIT_AVATAR, "")
         if (avatarUrl != null && avatarUrl.isNotEmpty()) {
             ivAvatar.visibility = View.VISIBLE
@@ -160,17 +182,21 @@ class CallkitIncomingActivity : Activity() {
                     .error(R.drawable.ic_default_avatar)
                     .into(ivAvatar)
         }
+
         val callType = data?.getInt(EXTRA_CALLKIT_TYPE, 0) ?: 0
         if (callType > 0) {
             ivAcceptCall.setImageResource(R.drawable.ic_video)
         }
         val duration = data?.getLong(EXTRA_CALLKIT_DURATION, 0L) ?: 0L
         wakeLockRequest(duration)
+
         finishTimeout(data, duration)
+
         val textAccept = data?.getString(EXTRA_CALLKIT_TEXT_ACCEPT, "")
         tvAccept.text = if (TextUtils.isEmpty(textAccept)) getString(R.string.text_accept) else textAccept
         val textDecline = data?.getString(EXTRA_CALLKIT_TEXT_DECLINE, "")
         tvDecline.text = if (TextUtils.isEmpty(textDecline)) getString(R.string.text_decline) else textDecline
+
         val backgroundColor = data?.getString(EXTRA_CALLKIT_BACKGROUND_COLOR, "#0955fa")
         try {
             ivBackground.setBackgroundColor(Color.parseColor(backgroundColor))
@@ -189,11 +215,13 @@ class CallkitIncomingActivity : Activity() {
                     .into(ivBackground)
         }
     }
+
     private fun finishTimeout(data: Bundle?, duration: Long) {
         val currentSystemTime = System.currentTimeMillis()
         val timeStartCall =
                 data?.getLong(CallkitNotificationManager.EXTRA_TIME_START_CALL, currentSystemTime)
                         ?: currentSystemTime
+
         val timeOut = duration - abs(currentSystemTime - timeStartCall)
         Handler(Looper.getMainLooper()).postDelayed({
             if (!isFinishing) {
@@ -205,34 +233,50 @@ class CallkitIncomingActivity : Activity() {
             }
         }, timeOut)
     }
+
     private fun initView() {
         ivBackground = findViewById(R.id.ivBackground)
         llBackgroundAnimation = findViewById(R.id.llBackgroundAnimation)
         llBackgroundAnimation.layoutParams.height =
                 Utils.getScreenWidth() + Utils.getStatusBarHeight(this@CallkitIncomingActivity)
         llBackgroundAnimation.startRippleAnimation()
+
         tvNameCaller = findViewById(R.id.tvNameCaller)
         tvNumber = findViewById(R.id.tvNumber)
         ivLogo = findViewById(R.id.ivLogo)
         ivAvatar = findViewById(R.id.ivAvatar)
+
         llAction = findViewById(R.id.llAction)
+
         val params = llAction.layoutParams as MarginLayoutParams
         params.setMargins(0, 0, 0, Utils.getNavigationBarHeight(this@CallkitIncomingActivity))
         llAction.layoutParams = params
+
         ivAcceptCall = findViewById(R.id.ivAcceptCall)
         tvAccept = findViewById(R.id.tvAccept)
         ivDeclineCall = findViewById(R.id.ivDeclineCall)
         tvDecline = findViewById(R.id.tvDecline)
         animateAcceptCall()
+
+        
+
         ivAcceptCall.setOnClickListener {
             onAcceptClick()
         }
         ivDeclineCall.setOnClickListener {
             onDeclineClick()
         }
+
+       onDeclineFromSender() 
+       
+    }
+    private fun onDeclineFromSender() {
+        Handler().postDelayed({
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         val intent =
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
+        
+        }, 2500)
     }
 
     private fun animateAcceptCall() {
@@ -240,6 +284,8 @@ class CallkitIncomingActivity : Activity() {
                 AnimationUtils.loadAnimation(this@CallkitIncomingActivity, R.anim.shake_anim)
         ivAcceptCall.animation = shakeAnimation
     }
+
+
     private fun onAcceptClick() {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         val intent = packageManager.getLaunchIntentForPackage(packageName)?.cloneFilter()
@@ -265,25 +311,23 @@ class CallkitIncomingActivity : Activity() {
             finish()
         }
     }
-    
+
     private fun onDeclineClick() {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         val intent =
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
         sendBroadcast(intent)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {       
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {   
             Handler().postDelayed({
-                Toast.makeText(this, "Call Endeeed", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Call ended", Toast.LENGTH_LONG).show()
                 finishAndRemoveTask()
             }, 2500)
         } else {
             Handler().postDelayed({
-                Toast.makeText(this, "Call Endeeed", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Call ended", Toast.LENGTH_LONG).show()
                 finish()
             }, 2500)
-        }
-       
-
+        } 
     }
 
     private fun getPicassoInstance(context: Context, headers: HashMap<String, Any?>): Picasso {
