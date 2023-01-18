@@ -267,15 +267,16 @@ class CallkitIncomingActivity : Activity() {
             onDeclineClick()
         }
 
-        onDeclineFromSender()
+        onDeclineFromSender() 
        
     }
     private fun onDeclineFromSender() {
         Handler().postDelayed({
-            val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
-            val intent =
-                    CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
-            }, 2500)
+        val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
+        val intent =
+                CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
+        
+        }, 2500)
     }
 
     private fun animateAcceptCall() {
@@ -288,7 +289,6 @@ class CallkitIncomingActivity : Activity() {
     private fun onAcceptClick() {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         val intent = packageManager.getLaunchIntentForPackage(packageName)?.cloneFilter()
-        sendBroadcast(intent)
         if (isTaskRoot) {
             intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         } else {
@@ -316,6 +316,8 @@ class CallkitIncomingActivity : Activity() {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         val intent =
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
+                sendBroadcast(intent)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {   
             Handler().postDelayed({
                 Toast.makeText(this, "Call ended", Toast.LENGTH_LONG).show()
