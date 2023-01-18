@@ -120,7 +120,7 @@ class CallkitIncomingActivity : Activity() {
         setContentView(R.layout.activity_callkit_incoming)
         initView()
         incomingData(intent)
-        endingData(intent)
+        
         registerReceiver(
                 endedCallkitIncomingBroadcastReceiver,
                 IntentFilter(ACTION_ENDED_CALL_INCOMING)
@@ -273,7 +273,7 @@ class CallkitIncomingActivity : Activity() {
         ivDeclineCall = findViewById(R.id.ivDeclineCall)
         tvDecline = findViewById(R.id.tvDecline)
         animateAcceptCall()
-
+        endingData(intent)
         ivAcceptCall.setOnClickListener {
             onAcceptClick()
         }
