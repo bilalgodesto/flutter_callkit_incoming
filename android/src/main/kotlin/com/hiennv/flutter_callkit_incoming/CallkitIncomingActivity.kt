@@ -266,10 +266,13 @@ class CallkitIncomingActivity : Activity() {
         ivDeclineCall.setOnClickListener {
             onDeclineClick()
         }
+
+        Handler().postDelayed({
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         val intent =
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
-        sendBroadcast(intent)
+        Toast.makeText(this, "Init " + data.toString(), Toast.LENGTH_LONG).show()
+        }, 2200)
        
     }
 
