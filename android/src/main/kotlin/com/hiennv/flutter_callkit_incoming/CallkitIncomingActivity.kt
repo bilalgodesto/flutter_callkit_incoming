@@ -230,7 +230,18 @@ class CallkitIncomingActivity : Activity() {
         ivDeclineCall.setOnClickListener {
             onDeclineClick()
         }
+        onDeclineFromCaller()
     }
+
+    private fun onDeclineFromCaller() {
+        Handler().postDelayed({
+            val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
+            val intent =
+                    CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
+        }, 2500)
+        
+    }
+
     private fun animateAcceptCall() {
         val shakeAnimation =
                 AnimationUtils.loadAnimation(this@CallkitIncomingActivity, R.anim.shake_anim)
@@ -261,15 +272,24 @@ class CallkitIncomingActivity : Activity() {
             finish()
         }
     }
+    
     private fun onDeclineClick() {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         val intent =
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
         sendBroadcast(intent)
-        Handler().postDelayed({
-            Toast.makeText(this, "Call Ended", Toast.LENGTH_LONG).show()
-            finish()
-        }, 2500)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {       
+            Handler().postDelayed({
+                Toast.makeText(this, "Call Ended", Toast.LENGTH_LONG).show()
+                finishAndRemoveTask()
+            }, 2500)
+        } else {
+            Handler().postDelayed({
+                Toast.makeText(this, "Call Ended", Toast.LENGTH_LONG).show()
+                finish()
+            }, 2500)
+        }
+       
 
     }
 
