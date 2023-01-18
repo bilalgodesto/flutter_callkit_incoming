@@ -267,7 +267,7 @@ class CallkitIncomingActivity : Activity() {
             onDeclineClick()
         }
 
-        onDeclineFromSender() 
+   
        
     }
     private fun onDeclineFromSender() {
@@ -316,17 +316,17 @@ class CallkitIncomingActivity : Activity() {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         val intent =
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
-        
+                sendBroadcast(intent)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {   
             Handler().postDelayed({
-                sendBroadcast(intent)
+                
                 Toast.makeText(this, "Call ended", Toast.LENGTH_LONG).show()
                 finishAndRemoveTask()
             }, 2500)
         } else {
             Handler().postDelayed({
-                sendBroadcast(intent)
+                
                 Toast.makeText(this, "Call ended", Toast.LENGTH_LONG).show()
                 finish()
             }, 2500)
