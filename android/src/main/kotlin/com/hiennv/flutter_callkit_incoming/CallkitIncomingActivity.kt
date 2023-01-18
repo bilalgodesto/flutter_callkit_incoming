@@ -66,7 +66,9 @@ class CallkitIncomingActivity : Activity() {
         fun getIntentEnded(context: Context) =
                 Intent("${context.packageName}.${ACTION_ENDED_CALL_INCOMING}").apply{
                     Toast.makeText(context, "2 here", Toast.LENGTH_LONG).show() 
-                    Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                    putExtra(EXTRA_CALLKIT_INCOMING_DATA, data)
+                    flags =
+                            Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
                     
                 }
 
