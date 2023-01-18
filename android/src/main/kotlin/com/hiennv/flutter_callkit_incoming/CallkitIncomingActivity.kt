@@ -65,8 +65,8 @@ class CallkitIncomingActivity : Activity() {
 
         fun getIntentEnded(context: Context) =
                 Intent("${context.packageName}.${ACTION_ENDED_CALL_INCOMING}").apply{
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        }
+                    System.exit(0)
+                }
 
     }
 
