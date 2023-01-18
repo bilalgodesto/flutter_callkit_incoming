@@ -269,11 +269,9 @@ class CallkitIncomingActivity : Activity() {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         val intent =
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
-        sendBroadcast(intent)
+        
         Toast.makeText(this, "Init" + data.toString(), Toast.LENGTH_LONG).show()
-        if(data == null){
-            finish()
-        }
+       
     }
 
     private fun animateAcceptCall() {
