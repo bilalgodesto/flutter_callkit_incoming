@@ -119,6 +119,7 @@ class CallkitIncomingActivity : Activity() {
         setContentView(R.layout.activity_callkit_incoming)
         initView()
         incomingData(intent)
+        endingData(intent)
         registerReceiver(
                 endedCallkitIncomingBroadcastReceiver,
                 IntentFilter(ACTION_ENDED_CALL_INCOMING)
@@ -169,10 +170,15 @@ class CallkitIncomingActivity : Activity() {
         win.attributes = winParams
     }
 
+    private fun endingData(intent: Intent) {
+        val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
+        Toast.makeText(applicationContext, data.toString(), Toast.LENGTH_LONG).show()
+        finish()
+    }
+
 
     private fun incomingData(intent: Intent) {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
-        Toast.makeText(applicationContext, data.toString(), Toast.LENGTH_LONG).show()
         if (data == null) finish()
 
         tvNameCaller.text = data?.getString(EXTRA_CALLKIT_NAME_CALLER, "")
