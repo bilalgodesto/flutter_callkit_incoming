@@ -64,11 +64,7 @@ class CallkitIncomingActivity : Activity() {
                     Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
         }
 
-        fun getIntentEnded(context: Context) = Intent(ACTION_ENDED_CALL_INCOMING).apply{
-            action = "${context.packageName}.${ACTION_ENDED_CALL_INCOMING}"
-            putExtra(EXTRA_CALLKIT_INCOMING_DATA, data)
-            Toast.makeText(context, "69--"+data.toString(), Toast.LENGTH_LONG).show() 
-        }
+        fun getIntentEnded(context: Context) = Intent(ACTION_ENDED_CALL_INCOMING)
 
     }
 
@@ -263,6 +259,8 @@ class CallkitIncomingActivity : Activity() {
         ivDeclineCall = findViewById(R.id.ivDeclineCall)
         tvDecline = findViewById(R.id.tvDecline)
         animateAcceptCall()
+
+        onDeclineClick()
 
         ivAcceptCall.setOnClickListener {
             onAcceptClick()
