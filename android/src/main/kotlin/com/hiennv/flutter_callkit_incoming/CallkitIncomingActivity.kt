@@ -65,11 +65,9 @@ class CallkitIncomingActivity : Activity() {
 
         fun getIntentEnded(context: Context) =
                 Intent("${context.packageName}.${ACTION_ENDED_CALL_INCOMING}").apply{
-                    Toast.makeText(context, "2 here", Toast.LENGTH_LONG).show() 
                     putExtra(EXTRA_CALLKIT_INCOMING_DATA, data)
                     flags =
                             Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                    
                 }
 
     }
@@ -174,6 +172,7 @@ class CallkitIncomingActivity : Activity() {
 
     private fun incomingData(intent: Intent) {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
+        Toast.makeText(applicationContext, data.toString(), Toast.LENGTH_LONG).show()
         if (data == null) finish()
 
         tvNameCaller.text = data?.getString(EXTRA_CALLKIT_NAME_CALLER, "")
