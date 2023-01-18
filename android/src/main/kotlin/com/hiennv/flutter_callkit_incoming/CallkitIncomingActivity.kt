@@ -64,13 +64,9 @@ class CallkitIncomingActivity : Activity() {
         }
 
         fun getIntentEnded(context: Context) =
-                Intent("${context.packageName}.${ACTION_ENDED_CALL_INCOMING}").apply{
-                    System.exit(0)
-                }
+                Intent("${context.packageName}.${ACTION_ENDED_CALL_INCOMING}")
 
     }
-
-    
 
     inner class EndedCallkitIncomingBroadcastReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -117,11 +113,9 @@ class CallkitIncomingActivity : Activity() {
         setContentView(R.layout.activity_callkit_incoming)
         initView()
         incomingData(intent)
-        
         registerReceiver(
                 endedCallkitIncomingBroadcastReceiver,
                 IntentFilter(ACTION_ENDED_CALL_INCOMING)
-                
         )
     }
 
@@ -167,7 +161,6 @@ class CallkitIncomingActivity : Activity() {
         }
         win.attributes = winParams
     }
-
 
 
     private fun incomingData(intent: Intent) {
@@ -265,6 +258,7 @@ class CallkitIncomingActivity : Activity() {
         ivDeclineCall = findViewById(R.id.ivDeclineCall)
         tvDecline = findViewById(R.id.tvDecline)
         animateAcceptCall()
+
         ivAcceptCall.setOnClickListener {
             onAcceptClick()
         }
@@ -321,11 +315,9 @@ class CallkitIncomingActivity : Activity() {
                 Toast.makeText(this, "Call ended", Toast.LENGTH_LONG).show()
                 finish()
             }, 2500)
-        }
-        
-            
+        } 
     }
-    
+
     private fun getPicassoInstance(context: Context, headers: HashMap<String, Any?>): Picasso {
         val client = OkHttpClient.Builder()
                 .addNetworkInterceptor { chain ->
