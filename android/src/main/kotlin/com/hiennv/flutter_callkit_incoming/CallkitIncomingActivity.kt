@@ -68,7 +68,7 @@ class CallkitIncomingActivity : Activity() {
                     putExtra(EXTRA_CALLKIT_INCOMING_DATA, data)
                     flags =
                             Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                            Toast.makeText(context, flags.toString(), Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, "test "+flags.toString(), Toast.LENGTH_LONG).show()
                         }
 
     }
