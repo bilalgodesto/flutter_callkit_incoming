@@ -65,10 +65,7 @@ class CallkitIncomingActivity : Activity() {
 
         fun getIntentEnded(context: Context) =
                 Intent("${context.packageName}.${ACTION_ENDED_CALL_INCOMING}").apply{
-                    putExtra(EXTRA_CALLKIT_INCOMING_DATA, data)
-                    flags =
-                            Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                            Toast.makeText(context, "test "+flags.toString(), Toast.LENGTH_LONG).show()
+                    Intent.FLAG_ACTIVITY_CLEAR_TASK
                         }
 
     }
@@ -171,11 +168,6 @@ class CallkitIncomingActivity : Activity() {
         win.attributes = winParams
     }
 
-    private fun endingData(intent: Intent) {
-        val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
-        Toast.makeText(applicationContext, data.toString(), Toast.LENGTH_LONG).show()
-        if (data == null) finish()
-    }
 
 
     private fun incomingData(intent: Intent) {
@@ -273,7 +265,6 @@ class CallkitIncomingActivity : Activity() {
         ivDeclineCall = findViewById(R.id.ivDeclineCall)
         tvDecline = findViewById(R.id.tvDecline)
         animateAcceptCall()
-        endingData(intent)
         ivAcceptCall.setOnClickListener {
             onAcceptClick()
         }
