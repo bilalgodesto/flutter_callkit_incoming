@@ -173,7 +173,7 @@ class CallkitIncomingActivity : Activity() {
 
     private fun endingData(intent: Intent) {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
-        Toast.makeText(applicationContext, data.toString(), Toast.LENGTH_LONG).show()
+        Toast.makeText(applicationContext, "toast data", Toast.LENGTH_LONG).show()
         finish()
     }
 
