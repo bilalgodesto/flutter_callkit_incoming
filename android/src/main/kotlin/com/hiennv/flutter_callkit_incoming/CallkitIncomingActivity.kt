@@ -275,6 +275,7 @@ class CallkitIncomingActivity : Activity() {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         val intent =
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
+                Toast.makeText(this, data.toString(), Toast.LENGTH_LONG).show()
         
         }, 2500)
     }
