@@ -323,12 +323,12 @@ class CallkitIncomingActivity : Activity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {   
             Handler().postDelayed({
-                Toast.makeText(this, "Call endede", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Call ended", Toast.LENGTH_LONG).show()
                 finishAndRemoveTask()
             }, 2500)
         } else {
             Handler().postDelayed({
-                Toast.makeText(this, "Call endeed", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Call ended", Toast.LENGTH_LONG).show()
                 finish()
             }, 2500)
         } 
