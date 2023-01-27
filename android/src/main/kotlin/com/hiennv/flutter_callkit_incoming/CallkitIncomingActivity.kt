@@ -73,9 +73,13 @@ class CallkitIncomingActivity : Activity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (!isFinishing) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    Handler().postDelayed({
                     finishAndRemoveTask()
+                }, 2500)
                 } else {
+                    Handler().postDelayed({
                     finish()
+                }, 2500)
                 }
             }
         }
