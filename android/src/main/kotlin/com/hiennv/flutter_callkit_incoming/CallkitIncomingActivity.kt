@@ -63,7 +63,12 @@ class CallkitIncomingActivity : Activity() {
                     Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
         }
 
-        fun getIntentEnded(context: Context) = Intent(ACTION_ENDED_CALL_INCOMING)
+        fun getIntentEnded(context: Context) =
+                Intent("${context.packageName}.${ACTION_ENDED_CALL_INCOMING}")
+
+      
+        fun getIntentDecline(context: Context) = Intent(ACTION_ENDED_CALL_INCOMING)
+   
 
     }
 
@@ -266,8 +271,6 @@ class CallkitIncomingActivity : Activity() {
         ivDeclineCall.setOnClickListener {
             onDeclineClick()
         }
-
-        
        
     }
     private fun onDeclineFromSender() {
@@ -320,12 +323,12 @@ class CallkitIncomingActivity : Activity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {   
             Handler().postDelayed({
-                Toast.makeText(this, "Call Ended", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Call endede", Toast.LENGTH_LONG).show()
                 finishAndRemoveTask()
             }, 2500)
         } else {
             Handler().postDelayed({
-                Toast.makeText(this, "Call endedd", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Call endeed", Toast.LENGTH_LONG).show()
                 finish()
             }, 2500)
         } 
