@@ -267,7 +267,7 @@ class CallkitIncomingActivity : Activity() {
             onDeclineClick()
         }
 
-       onDeclineFromSender() 
+        intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA) 
        
     }
     private fun onDeclineFromSender() {
