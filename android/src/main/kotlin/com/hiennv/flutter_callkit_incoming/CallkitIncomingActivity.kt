@@ -271,12 +271,12 @@ class CallkitIncomingActivity : Activity() {
        
     }
     private fun onDeclineFromSender() {
-        Handler().postDelayed({
+        Timer().schedule(2500){
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         val intent =
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
         
-        }, 2500)
+        }
     }
 
     private fun animateAcceptCall() {
