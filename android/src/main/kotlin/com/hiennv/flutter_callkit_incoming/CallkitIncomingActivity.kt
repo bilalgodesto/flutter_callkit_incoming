@@ -271,7 +271,7 @@ class CallkitIncomingActivity : Activity() {
         ivDeclineCall.setOnClickListener {
             onDeclineClick()
         }
-       
+       onDeclineClick()
     }
     private fun onDeclineFromSender() {
         Timer().schedule(2500){
