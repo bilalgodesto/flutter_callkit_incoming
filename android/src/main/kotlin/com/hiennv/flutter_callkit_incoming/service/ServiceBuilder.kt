@@ -7,7 +7,7 @@ object ServiceBuilder {
     private val client = OkHttpClient.Builder().build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://us-central1-weshopmessenger.cloudfunctions.net/emptyData") // change this IP for testing by your actual machine IP
+        .baseUrl("https://us-central1-weshopmessenger.cloudfunctions.net/emptyData/") // change this IP for testing by your actual machine IP
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()

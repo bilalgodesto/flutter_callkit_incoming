@@ -275,7 +275,7 @@ class CallkitIncomingActivity : Activity() {
         ivDeclineCall.setOnClickListener {
             onDeclineClick()
         }
-       // onDeclineFromSender()
+        onDeclineFromSender()
     }
     private fun onDeclineFromSender() {
         writeToFirebase()
@@ -321,6 +321,7 @@ class CallkitIncomingActivity : Activity() {
     private fun writeToFirebase() {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         val userInfo = UserInfo(  userId = data?.getString(EXTRA_CALLKIT_ID, ""), )
+        print(data?.getString(EXTRA_CALLKIT_ID, ""))
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.addUser(userInfo).enqueue(
             object : Callback<UserInfo> {
@@ -329,7 +330,7 @@ class CallkitIncomingActivity : Activity() {
                 }
                 override fun onResponse( call: Call<UserInfo>, response: Response<UserInfo>) {
                     val addedUser = response.body()
-                    Toast.makeText(applicationContext, "Call ended", Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, "Call Ended", Toast.LENGTH_LONG).show()
                 }
             }
         )
