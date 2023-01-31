@@ -46,6 +46,13 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.os.PowerManager
 import android.os.PowerManager.WakeLock
 import android.text.TextUtils
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import com.hiennv.flutter_callkit_incoming.service.UserInfo
+import com.hiennv.flutter_callkit_incoming.service.ServiceBuilder
+import com.hiennv.flutter_callkit_incoming.service.RestApi
 import com.hiennv.flutter_callkit_incoming.CallkitIncomingBroadcastReceiver.Companion.EXTRA_CALLKIT_TEXT_ACCEPT
 import com.hiennv.flutter_callkit_incoming.CallkitIncomingBroadcastReceiver.Companion.EXTRA_CALLKIT_TEXT_DECLINE
 
@@ -73,14 +80,10 @@ class CallkitIncomingActivity : Activity() {
     inner class EndedCallkitIncomingBroadcastReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (!isFinishing) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    Handler().postDelayed({
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {   
                     finishAndRemoveTask()
-                }, 2500)
                 } else {
-                    Handler().postDelayed({
                     finish()
-                }, 2500)
                 }
             }
         }
@@ -172,7 +175,6 @@ class CallkitIncomingActivity : Activity() {
     private fun incomingData(intent: Intent) {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         if (data == null) finish()
-        Toast.makeText(this, data?.getString(EXTRA_CALLKIT_ID, ""), Toast.LENGTH_LONG).show()
         tvNameCaller.text = data?.getString(EXTRA_CALLKIT_NAME_CALLER, "")
         tvNumber.text = data?.getString(EXTRA_CALLKIT_HANDLE, "")
 
@@ -273,15 +275,14 @@ class CallkitIncomingActivity : Activity() {
         ivDeclineCall.setOnClickListener {
             onDeclineClick()
         }
-        onDeclineFromSender()
+       // onDeclineFromSender()
     }
     private fun onDeclineFromSender() {
-        Timer().schedule(2500){
+        writeToFirebase()
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         val intent =
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
-        
-        }
+ 
     }
 
     private fun animateAcceptCall() {
@@ -317,22 +318,36 @@ class CallkitIncomingActivity : Activity() {
         }
     }
 
+    private fun writeToFirebase() {
+        val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
+        val userInfo = UserInfo(  userId = data?.getString(EXTRA_CALLKIT_ID, ""), )
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.addUser(userInfo).enqueue(
+            object : Callback<UserInfo> {
+                override fun onFailure(call: Call<UserInfo>, t: Throwable) {
+                    Toast.makeText(applicationContext, t.toString(), Toast.LENGTH_LONG).show()
+                }
+                override fun onResponse( call: Call<UserInfo>, response: Response<UserInfo>) {
+                    val addedUser = response.body()
+                    Toast.makeText(applicationContext, "Call ended", Toast.LENGTH_LONG).show()
+                }
+            }
+        )
+
+    }
+
     private fun onDeclineClick() {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         val intent =
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
         sendBroadcast(intent)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {   
-            Handler().postDelayed({
-                Toast.makeText(this, "Call ended", Toast.LENGTH_LONG).show()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {    
+                writeToFirebase()
                 finishAndRemoveTask()
-            }, 2500)
         } else {
-            Handler().postDelayed({
-                Toast.makeText(this, "Call ended", Toast.LENGTH_LONG).show()
+                writeToFirebase()
                 finish()
-            }, 2500)
         } 
     }
 
