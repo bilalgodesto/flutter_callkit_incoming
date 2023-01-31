@@ -350,10 +350,14 @@ class CallkitIncomingActivity : Activity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {    
                 writeToFirebase()
-                finishAndRemoveTask()
+                Handler().postDelayed({
+                    finishAndRemoveTask()
+                }, 1500)
         } else {
                 writeToFirebase()
-                finish()
+                Handler().postDelayed({
+                    finish()
+                }, 1500)
         } 
     }
 
