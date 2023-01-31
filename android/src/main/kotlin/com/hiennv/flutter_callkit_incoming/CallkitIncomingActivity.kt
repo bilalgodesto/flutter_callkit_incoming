@@ -35,6 +35,7 @@ import com.hiennv.flutter_callkit_incoming.CallkitIncomingBroadcastReceiver.Comp
 import com.hiennv.flutter_callkit_incoming.CallkitIncomingBroadcastReceiver.Companion.EXTRA_CALLKIT_HEADERS
 import com.hiennv.flutter_callkit_incoming.CallkitIncomingBroadcastReceiver.Companion.EXTRA_CALLKIT_IS_SHOW_LOGO
 import com.hiennv.flutter_callkit_incoming.CallkitIncomingBroadcastReceiver.Companion.EXTRA_CALLKIT_TYPE
+import com.hiennv.flutter_callkit_incoming.CallkitIncomingBroadcastReceiver.Companion.EXTRA_CALLKIT_ID
 import com.hiennv.flutter_callkit_incoming.widgets.RippleRelativeLayout
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -171,7 +172,7 @@ class CallkitIncomingActivity : Activity() {
     private fun incomingData(intent: Intent) {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         if (data == null) finish()
-
+        Toast.makeText(this, data?.getString(EXTRA_CALLKIT_ID, ""), Toast.LENGTH_LONG).show()
         tvNameCaller.text = data?.getString(EXTRA_CALLKIT_NAME_CALLER, "")
         tvNumber.text = data?.getString(EXTRA_CALLKIT_HANDLE, "")
 
