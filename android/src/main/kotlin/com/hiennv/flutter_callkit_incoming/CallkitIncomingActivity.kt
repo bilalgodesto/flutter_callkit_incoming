@@ -81,9 +81,14 @@ class CallkitIncomingActivity : Activity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (!isFinishing) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {   
-                    finishAndRemoveTask()
+                    Handler().postDelayed({
+                        finishAndRemoveTask()
+                    }, 1500)
+                    
                 } else {
-                    finish()
+                    Handler().postDelayed({
+                        finish()
+                    }, 1500)
                 }
             }
         }
@@ -330,7 +335,7 @@ class CallkitIncomingActivity : Activity() {
                 }
                 override fun onResponse( call: Call<UserInfo>, response: Response<UserInfo>) {
                     val addedUser = response.body()
-                    Toast.makeText(applicationContext, "Call Ended", Toast.LENGTH_LONG).show()
+                    
                 }
             }
         )
