@@ -283,9 +283,9 @@ class CallkitIncomingActivity : Activity() {
         onDeclineFromSender()
     }
     private fun onDeclineFromSender() {
+        writeToFirebase()
        
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
-        writeToFirebase()
         val intent =
                 CallkitIncomingBroadcastReceiver.getIntentDecline(this@CallkitIncomingActivity, data)
  
@@ -336,6 +336,7 @@ class CallkitIncomingActivity : Activity() {
                 }
                 override fun onResponse( call: Call<UserInfo>, response: Response<UserInfo>) {
                     val addedUser = response.body()
+                    Toast.makeText(applicationContext, "Call going to end", Toast.LENGTH_LONG).show()
                 }
             }
         )
