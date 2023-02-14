@@ -181,9 +181,6 @@ class CallkitIncomingActivity : Activity() {
     private fun incomingData(intent: Intent) {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         if (data == null) finish()
-        val temp = data?.getSerializable(EXTRA_CALLKIT_EXTRA) as HashMap<String, Any?>
-        val userId = temp["userId"] as? String
-        Toast.makeText(applicationContext, userId, Toast.LENGTH_LONG).show()
         tvNameCaller.text = data?.getString(EXTRA_CALLKIT_NAME_CALLER, "")
         tvNumber.text = data?.getString(EXTRA_CALLKIT_HANDLE, "")
         
