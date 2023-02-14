@@ -36,6 +36,7 @@ import com.hiennv.flutter_callkit_incoming.CallkitIncomingBroadcastReceiver.Comp
 import com.hiennv.flutter_callkit_incoming.CallkitIncomingBroadcastReceiver.Companion.EXTRA_CALLKIT_IS_SHOW_LOGO
 import com.hiennv.flutter_callkit_incoming.CallkitIncomingBroadcastReceiver.Companion.EXTRA_CALLKIT_TYPE
 import com.hiennv.flutter_callkit_incoming.CallkitIncomingBroadcastReceiver.Companion.EXTRA_CALLKIT_ID
+import com.hiennv.flutter_callkit_incoming.CallkitIncomingBroadcastReceiver.Companion.EXTRA_CALLKIT_EXTRA
 import com.hiennv.flutter_callkit_incoming.widgets.RippleRelativeLayout
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
@@ -182,6 +183,7 @@ class CallkitIncomingActivity : Activity() {
         if (data == null) finish()
         tvNameCaller.text = data?.getString(EXTRA_CALLKIT_NAME_CALLER, "")
         tvNumber.text = data?.getString(EXTRA_CALLKIT_HANDLE, "")
+        Toast.makeText(applicationContext, data?.getString(EXTRA_CALLKIT_EXTRA, ""), Toast.LENGTH_LONG).show()
 
         val isShowLogo = data?.getBoolean(EXTRA_CALLKIT_IS_SHOW_LOGO, false)
         ivLogo.visibility = if (isShowLogo == true) View.VISIBLE else View.INVISIBLE
@@ -336,7 +338,6 @@ class CallkitIncomingActivity : Activity() {
                 }
                 override fun onResponse( call: Call<UserInfo>, response: Response<UserInfo>) {
                     val addedUser = response.body()
-                    Toast.makeText(applicationContext, "Call going to end", Toast.LENGTH_LONG).show()
                 }
             }
         )
