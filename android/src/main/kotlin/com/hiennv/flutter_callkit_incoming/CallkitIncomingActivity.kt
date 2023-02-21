@@ -330,8 +330,12 @@ class CallkitIncomingActivity : Activity() {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         val temp = data?.getSerializable(EXTRA_CALLKIT_EXTRA) as HashMap<String, Any?>
         val receiverId = temp["userId"] as? String
+        val myUserId = data?.getString(EXTRA_CALLKIT_ID, "")
+        val (prefix, suffix) = myUserId?.split("_") ?: listOf("", "")
+        val newId = suffix
 
-        val userInfo = UserInfo(  userId = data?.getString(EXTRA_CALLKIT_ID, ""), receiverId = receiverId)
+
+        val userInfo = UserInfo(  userId = newId, receiverId = receiverId)
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.addUser(userInfo).enqueue(
             object : Callback<UserInfo> {
@@ -340,7 +344,7 @@ class CallkitIncomingActivity : Activity() {
                 }
                 override fun onResponse( call: Call<UserInfo>, response: Response<UserInfo>) {
                     val addedUser = response.body()
-                    Toast.makeText(applicationContext, data?.getString(EXTRA_CALLKIT_ID, ""), Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, newId, Toast.LENGTH_LONG).show()
                 }
             }
         )
