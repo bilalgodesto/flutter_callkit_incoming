@@ -402,7 +402,7 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
         if (self.answerCall == nil && self.outgoingCall == nil) {
             sendEvent(SwiftFlutterCallkitIncomingPlugin.ACTION_CALL_DECLINE, self.data?.toJSON())
             print("responseString from endedddd")
-            let url = URL(string: "https://us-central1-weshopmessenger.cloudfunctions.net/declineCa")!
+            let url = URL(string: "http://us-central1-weshopmessenger.cloudfunctions.net/declineCa")!
             var request = URLRequest(url: url)
             //HTTP Headers
             request.addValue("application/json", forHTTPHeaderField: "Content-Type")
