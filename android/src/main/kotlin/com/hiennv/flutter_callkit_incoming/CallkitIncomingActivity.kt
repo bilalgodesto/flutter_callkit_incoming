@@ -284,7 +284,6 @@ class CallkitIncomingActivity : Activity() {
         ivDeclineCall.setOnClickListener {
             onDeclineClick()
         }
-        onDeclineFromSender()
     }
     private fun onDeclineFromSender() {
         writeToFirebase()
