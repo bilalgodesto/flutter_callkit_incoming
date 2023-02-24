@@ -345,8 +345,6 @@ class CallkitIncomingActivity : Activity() {
                     Toast.makeText(applicationContext, t.toString(), Toast.LENGTH_LONG).show()
                 }
                 override fun onResponse( call: Call<UserInfo>, response: Response<UserInfo>) {
-                    Toast.makeText(applicationContext, newId, Toast.LENGTH_LONG).show()
-                    Toast.makeText(applicationContext, newReceiverId, Toast.LENGTH_LONG).show()
                     val addedUser = response.body()
                 }
             }
