@@ -1,4 +1,4 @@
-mport Flutter
+import Flutter
 import UIKit
 import CallKit
 import AVFoundation
@@ -391,7 +391,7 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
             if(self.answerCall == nil && self.outgoingCall == nil){
                 sendEvent(SwiftFlutterCallkitIncomingPlugin.ACTION_CALL_TIMEOUT, self.data?.toJSON())
             } else {
-                print("responseString from before")
+                print("responseString from ")
                 sendEvent(SwiftFlutterCallkitIncomingPlugin.ACTION_CALL_ENDED, self.data?.toJSON())
             }
             action.fail()
@@ -401,54 +401,87 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
         self.callManager?.removeCall(call)
         if (self.answerCall == nil && self.outgoingCall == nil) {
             sendEvent(SwiftFlutterCallkitIncomingPlugin.ACTION_CALL_DECLINE, self.data?.toJSON())
-            print("responseString from endedddd")
-            let url = URL(string: "https://us-central1-weshopmessenger.cloudfunctions.net/declineCall")!
-            var request = URLRequest(url: url)
-            //HTTP Headers
-            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.addValue("application/json", forHTTPHeaderField: "Accept")
-            request.httpMethod = "POST"
-            struct UploadData: Codable {
-            let callUUID: String
-            let uuid: String
-            }
-            // Add data to the model
-            let uploadDataModel = UploadData(callUUID: action.cllUUID.uuidString, uuid: action.uuid.uuidString)
-
-            // Convert model to JSON data
-            guard let jsonData = try? JSONEncoder().encode(uploadDataModel) else {
-                print("Error: Trying to convert model to JSON data")
-                return
-            }
-            request.httpBody = jsonData
-            URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data,
-            let response = response as? HTTPURLResponse,
-            error == nil
-            else { // check for fundamental networking error
-                print("error", error ?? URLError(.badServerResponse))
-                return
-            }
-            guard (200 ... 299) ~= response.statusCode else { // check for http errors
-                print("statusCode should be 200, but is \(response.statusCode)")
-                print("response = \(response)")
-                return
-            }
-            // do whatever you want with the data, e.g.:
-            do {
-            //let responseObject = try JSONDecoder().decode(ResponseObject<Foo>.self, from: data)
-            //print(responseObject)
-            } catch {
-            print(error) // parsing error
-            if let responseString = String(data: data, encoding: .utf8) {
-                print("responseString = \(responseString)")
-
-            } else {
-                print("unable to parse response as string")
-            }
-            }
-            }.resume()
             
+            // Define the endpoint URL
+            let endpoint = URL(string: "https://us-central1-weshopmessenger.cloudfunctions.net/emptyData")
+
+            // Create the request object
+            var requestForDecline = URLRequest(url: endpoint!)
+            requestForDecline.httpMethod = "POST"
+
+            // Define the request body
+            let params: [String: Any] = ["userId": action.callUUID.uuidString, "receiverId": action.uuid.uuidString]
+            let jsonData = try! JSONSerialization.data(withJSONObject: params, options: [])
+
+            // Set the request body
+            requestForDecline.httpBody = jsonData
+
+            // Define the request headers
+            requestForDecline.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+            // Create the URLSession and data task
+            let session = URLSession.shared
+            let task = session.dataTask(with: requestForDecline) { data, response, error in
+                if let error = error {
+                    print("Error: \(error.localizedDescription)")
+                    return
+                }
+                
+                guard let data = data, let response = response as? HTTPURLResponse else {
+                    print("Invalid response")
+                    return
+                }
+                
+                // Print the response status code and body
+                print("Status code: \(response.statusCode)")
+                if let responseBody = String(data: data, encoding: .utf8) {
+                    print("Response body: \(responseBody)")
+                }
+            }
+
+            // Start the data task
+            task.resume()
+            
+            // Define the endpoint URL
+            let endpoint2 = URL(string: "https://us-central1-weshopmessenger.cloudfunctions.net/declineCall")
+
+            // Create the request object
+            var request = URLRequest(url: endpoint2!)
+            request.httpMethod = "POST"
+
+            // Define the request body
+            let params2: [String: Any] = ["callUUID": action.callUUID.uuidString, "uuid": action.uuid.uuidString]
+            let jsonData2 = try! JSONSerialization.data(withJSONObject: params2, options: [])
+
+            // Set the request body
+            request.httpBody = jsonData2
+
+            // Define the request headers
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+            // Create the URLSession and data task
+            let session2 = URLSession.shared
+            let task2 = session2.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    print("Error: \(error.localizedDescription)")
+                    return
+                }
+                
+                guard let data = data, let response = response as? HTTPURLResponse else {
+                    print("Invalid response")
+                    return
+                }
+                
+                // Print the response status code and body
+                print("Status code for decline: \(response.statusCode)")
+                if let responseBody = String(data: data, encoding: .utf8) {
+                    print("Response body for decline: \(responseBody)")
+                }
+            }
+
+            // Start the data task
+            task2.resume()
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                 action.fulfill()
             }
