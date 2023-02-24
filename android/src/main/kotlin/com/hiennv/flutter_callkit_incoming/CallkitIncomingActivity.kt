@@ -183,6 +183,8 @@ class CallkitIncomingActivity : Activity() {
     private fun incomingData(intent: Intent) {
         val data = intent.extras?.getBundle(EXTRA_CALLKIT_INCOMING_DATA)
         if (data == null) finish()
+       
+        Toast.makeText(applicationContext, "this is id", Toast.LENGTH_LONG).show()
         tvNameCaller.text = data?.getString(EXTRA_CALLKIT_NAME_CALLER, "")
         tvNumber.text = data?.getString(EXTRA_CALLKIT_HANDLE, "")
         
@@ -345,7 +347,7 @@ class CallkitIncomingActivity : Activity() {
                     Toast.makeText(applicationContext, t.toString(), Toast.LENGTH_LONG).show()
                 }
                 override fun onResponse( call: Call<UserInfo>, response: Response<UserInfo>) {
-                    Toast.makeText(applicationContext, newReceiverId, Toast.LENGTH_LONG).show()
+                    Toast.makeText(applicationContext, myUserId, Toast.LENGTH_LONG).show()
                     val addedUser = response.body()
                 }
             }
