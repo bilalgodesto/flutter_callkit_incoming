@@ -83,13 +83,13 @@ class CallkitIncomingActivity : Activity() {
             if (!isFinishing) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {   
                     Handler().postDelayed({
-                        writeToFirebase()
+                        
                         finishAndRemoveTask()
                     }, 1500)
                     
                 } else {
                     Handler().postDelayed({
-                        writeToFirebase()
+                        
                         finish()
                     }, 1500)
                 }
@@ -284,6 +284,7 @@ class CallkitIncomingActivity : Activity() {
         ivDeclineCall.setOnClickListener {
             onDeclineClick()
         }
+        onDeclineFromSender()
     }
     private fun onDeclineFromSender() {
         writeToFirebase()
