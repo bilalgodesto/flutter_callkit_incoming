@@ -409,8 +409,8 @@ public class SwiftFlutterCallkitIncomingPlugin: NSObject, FlutterPlugin, CXProvi
             var requestForDecline = URLRequest(url: endpoint!)
             requestForDecline.httpMethod = "POST"
 
-            // Define the request body
-            let params: [String: Any] = ["userId": action.callUUID.uuidString, "receiverId": action.uuid.uuidString]
+            // Define the request body with userId
+            let params: [String: Any] = ["userId": self.data?.extra["user"], "receiverId": self.data?.extra["callerId"]]
             let jsonData = try! JSONSerialization.data(withJSONObject: params, options: [])
 
             // Set the request body
